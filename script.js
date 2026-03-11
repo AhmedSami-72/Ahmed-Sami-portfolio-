@@ -173,20 +173,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     hamburger.addEventListener('click', () => {
         navbar.classList.toggle('active');
-        if (navbar.classList.contains('active')) {
-            navLinks.style.display = 'flex';
-        } else {
-            navLinks.style.display = '';
-        }
     });
 
     // Close mobile menu when clicking a link
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', () => {
             navbar.classList.remove('active');
-            if (window.innerWidth <= 768) {
-                navLinks.style.display = '';
-            }
         });
     });
 

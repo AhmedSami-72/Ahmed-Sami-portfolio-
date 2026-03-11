@@ -150,6 +150,7 @@ img {
     z-index: 1000;
     display: flex;
     align-items: center;
+    transition: var(--transition);
 }
 
 .navbar .container {
@@ -162,6 +163,7 @@ img {
     font-size: 1.8rem;
     font-weight: 800;
     color: var(--primary-color);
+    z-index: 1001;
 }
 
 .nav-links {
@@ -172,6 +174,7 @@ img {
 .nav-links li a {
     font-weight: 500;
     position: relative;
+    padding: 5px 0;
 }
 
 .nav-links li a::after {
@@ -179,8 +182,8 @@ img {
     position: absolute;
     width: 0;
     height: 2px;
-    bottom: -5px;
-    left: 0; /* Logical property would be better but left works for LTR default */
+    bottom: 0;
+    left: 0;
     background-color: var(--primary-color);
     transition: width 0.3s;
 }
@@ -199,13 +202,14 @@ img {
     display: flex;
     align-items: center;
     gap: 15px;
+    z-index: 1001;
 }
 
 #theme-toggle, .lang-btn {
     background: none;
     border: 1px solid var(--border-color);
     padding: 8px 12px;
-    border-radius: 50%; /* Circular for icons */
+    border-radius: 50%;
     cursor: pointer;
     font-size: 1.2rem;
     color: var(--text-color);
@@ -216,9 +220,10 @@ img {
 }
 
 .lang-btn {
-    border-radius: 5px; /* Rectangular for text */
+    border-radius: 5px;
     font-size: 1rem;
     font-weight: bold;
+    min-width: 45px;
 }
 
 #theme-toggle:hover, .lang-btn:hover {
@@ -239,6 +244,8 @@ img {
     flex-direction: column;
     gap: 5px;
     cursor: pointer;
+    z-index: 1001;
+    padding: 5px;
 }
 
 .hamburger span {
@@ -246,15 +253,27 @@ img {
     height: 3px;
     background-color: var(--text-color);
     transition: var(--transition);
+    border-radius: 2px;
+}
+
+/* Hamburger Animation */
+.navbar.active .hamburger span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+.navbar.active .hamburger span:nth-child(2) {
+    opacity: 0;
+}
+.navbar.active .hamburger span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
 }
 
 /* Hero Section */
 .hero {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     position: relative;
-    padding-top: var(--nav-height);
+    padding: calc(var(--nav-height) + 40px) 0 60px;
 }
 
 .hero-content {
@@ -275,10 +294,10 @@ img {
 }
 
 .hero-text h1 {
-    font-size: 3.5rem;
+    font-size: clamp(2.5rem, 8vw, 4rem);
     margin-bottom: 1rem;
-    line-height: 1.2;
-    min-height: 1.2em; /* Prevent layout shift */
+    line-height: 1.1;
+    min-height: 1.2em;
 }
 
 /* Typewriter Cursor */
@@ -295,7 +314,7 @@ img {
 }
 
 .hero-text h3 {
-    font-size: 1.25rem;
+    font-size: clamp(1.1rem, 4vw, 1.5rem);
     color: var(--primary-color);
     margin-bottom: 1.5rem;
     font-weight: 600;
@@ -315,11 +334,11 @@ img {
 }
 
 .hero-image img {
-    width: 350px;
-    height: 350px;
+    width: clamp(250px, 40vw, 400px);
+    height: clamp(250px, 40vw, 400px);
     object-fit: cover;
     border-radius: 50%;
-    border: 5px solid var(--alt-bg-color);
+    border: 8px solid var(--alt-bg-color);
     box-shadow: var(--shadow);
     transition: var(--transition);
 }
@@ -688,35 +707,35 @@ footer {
 /* Floating Elements */
 .floating-container {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
+    bottom: 20px;
+    right: 20px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
     z-index: 999;
 }
 
 /* RTL Floating */
 [dir="rtl"] .floating-container {
     right: auto;
-    left: 30px;
+    left: 20px;
 }
 
 .float-btn {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: var(--shadow);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     cursor: pointer;
     transition: var(--transition);
     border: none;
 }
 
 .float-btn:hover {
-    transform: scale(1.1);
+    transform: scale(1.1) translateY(-5px);
 }
 
 .float-btn.whatsapp {
@@ -727,6 +746,7 @@ footer {
     background-color: var(--primary-color);
     color: #fff;
     font-weight: bold;
+    font-size: 0.9rem;
 }
 
 /* Animation Classes */
@@ -742,9 +762,14 @@ footer {
 }
 
 @media (max-width: 992px) {
+    .hero {
+        padding-top: calc(var(--nav-height) + 20px);
+    }
+    
     .hero-content {
         flex-direction: column-reverse;
         text-align: center;
+        gap: 30px;
     }
 
     .hero-text p {
@@ -753,7 +778,9 @@ footer {
     }
 
     .hero-buttons {
+        display: flex;
         justify-content: center;
+        gap: 10px;
     }
 
     .experience-card {
@@ -768,53 +795,78 @@ footer {
 }
 
 @media (max-width: 768px) {
-    .navbar .nav-links, .nav-actions {
-        display: none;
+    .nav-actions {
+        gap: 8px;
+    }
+
+    #theme-toggle, .lang-btn {
+        padding: 6px 10px;
+        font-size: 1rem;
     }
 
     .hamburger {
         display: flex;
     }
 
-    /* Mobile Menu */
-    .navbar.active .nav-links {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: var(--nav-height);
-        left: 0;
-        width: 100%;
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        height: 100vh;
         background-color: var(--bg-color);
-        padding: 20px;
-        box-shadow: var(--shadow);
-        border-top: 1px solid var(--border-color);
+        flex-direction: column;
+        justify-content: center;
         align-items: center;
+        transition: 0.4s ease-in-out;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        z-index: 1000;
+        gap: 40px;
     }
 
-    .navbar.active .nav-actions {
-        display: flex;
-        position: absolute;
-        top: 20px; /* Adjust based on logo alignment */
-        right: 70px;
-        background: none;
-        box-shadow: none;
+    [dir="rtl"] .nav-links {
+        right: auto;
+        left: -100%;
+        box-shadow: 5px 0 15px rgba(0,0,0,0.1);
     }
-    
-    /* Better mobile menu structure */
-    .nav-links.mobile-open {
-        display: flex;
+
+    .navbar.active .nav-links {
+        right: 0;
+    }
+
+    [dir="rtl"] .navbar.active .nav-links {
+        left: 0;
+    }
+
+    .nav-links li a {
+        font-size: 1.5rem;
+    }
+
+    .section {
+        padding: 60px 0;
     }
 
     .section-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
     }
 
-    .hero-text h1 {
-        font-size: 2.5rem;
+    .grid-3, .grid-4, .projects-grid {
+        grid-template-columns: 1fr;
     }
 
-    .process-steps {
-        flex-direction: column;
+    .floating-container {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    [dir="rtl"] .floating-container {
+        left: 15px;
+    }
+
+    .float-btn {
+        width: 40px;
+        height: 40px;
     }
 }
 
